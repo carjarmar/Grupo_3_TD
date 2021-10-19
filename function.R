@@ -86,13 +86,43 @@ search.alphas = function(search_vector, Altmax, Altmin, precision, current_digit
 
 
 
-# this is solely for testing
-X = matrix(c(5,4,6,2,3,1,-1,8,7,5,2,0),nrow=4,ncol=3,byrow=TRUE)
-
-colnames(X)=c('e1','e2','e3')
-rownames(X)=c('d1','d2','d3','d4')
+# EJEMPLOS PARA PROBAR LA FUNCION
+  #ejemplo 1
+X1 = matrix(c(5,4,6,2,3,1,-1,8,7,5,2,0),nrow=4,ncol=3,byrow=TRUE)
+colnames(X1)=c('e1','e2','e3')
+rownames(X1)=c('d1','d2','d3','d4')
 
 which.min.general(c(3,2,8,2,9,2))
 
+criterio.Hurwicz(X1)
+dibuja.criterio.Hurwicz(X1)
 
-criterio.Hurwicz(X)
+
+  #ejemplo 2 (ejercicio relacion 1.4)
+X2 = crea.tablaX(c(2160,360,720,720,3480,480), numalternativas = 3, numestados = 2)
+colnames(X1)=c('e1','e2')
+rownames(X1)=c('d1','d2','d3')
+
+#(caso no favorable)
+criterio.Hurwicz(X1)
+dibuja.criterio.Hurwicz(X1)
+
+
+  #ejemplo 3 (ejercicio relacion 1.5)
+X3 = crea.tablaX(c(125,120,156,60,130,80), numalternativas = 3, numestados = 2)
+colnames(X3)=c('e1','e2')
+rownames(X3)=c('d1','d2','d3')
+
+#(caso no favorable, y con dos puntos de corte, luego deberia darnos 2 alfas diferentes)
+criterio.Hurwicz(X3)
+dibuja.criterio.Hurwicz(X3)
+
+
+  #ejemplo 4 (ejercicio relacion 1.6)
+X4 = crea.tablaX(c(55,5,70,-30,85,-65), numalternativas = 3, numestados = 2)
+colnames(X4)=c('e1','e2')
+rownames(X4)=c('d1','d2','d3')
+
+#(caso favorable)
+criterio.Hurwicz(X4)
+dibuja.criterio.Hurwicz(X4)
