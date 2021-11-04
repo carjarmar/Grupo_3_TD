@@ -321,4 +321,61 @@ dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
 
 ## Solución
 
+-   Planteamiento:
+
+    -   Un decisor
+    -   Modelo de costos (desfavorable)
+    -   Alternativas:
+        -   d1= "Natación"
+        -   d2= "Ciclismo"
+        -   d3= "Patinaje"
+        -   d4= "Equitación"
+
+    -   Estados de la naturaleza:
+        -   e1= "Practicar deporte y desplazarse en trasporte"
+        -   e2= "Practicar deporte sin pagar transporte"
+
+    -   Valoraciones (costos de los dos)
+        -   Estado e1:
+            -   $x_{1,1}=$ `r 120+4.10*8`
+            -   $x_{1,2}=$ `r 245`
+            -   $x_{1,3}=$ `r 40+14+192+24`
+            -   $x_{1,4}=$ `r 60+10*12`
+
+        -   Estado e2:
+            -   $x_{2,1}=$ `r 120`
+            -   $x_{2,2}=$ `r 245`
+            -   $x_{3,2}=$ `r 40+14+192`
+            -   $x_{4,2}=$ `r 60`
+
+-   Introducción de datos:
+
+```{r}
+tb = crea.tablaX(c(152.8,120,
+                     245, 245,
+                     270, 246,
+                     180, 60), numalternativas = 4, numestados = 2)
+```
+
+
+
+```{r}
+sol05= criterio.Todos(tb, alfa = 0.5, favorable = FALSE)
+sol05
+```
+
+La mejor alternativa por todos los métodos es d4, excepto por el método de Wald que es d1 (Natación). Por tanto, la mejor alternativa es practicar equitación.
+
+
+```{r}
+colnames(tb)=c('e1','e2')
+rownames(tb)=c('Natación','Ciclismo','Patinaje','Equitación')
+
+criterio.Hurwicz.mod(tb, favorable = FALSE)
+
+dibuja.criterio.Hurwicz(tb, favorable = FALSE)
+```
+
+
+
 \newpage
