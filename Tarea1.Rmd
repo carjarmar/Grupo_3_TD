@@ -114,8 +114,11 @@ criterio.Hurwicz.mod = function(tablaX,favorable=TRUE, precision = 2) {
   resultados$tablaX = tablaX;
   resultados$ValorOptimo = Hurwicz;
   resultados$AlternativaOptima = Alt_Hurwicz;
-  
+  resultados$Conclusion = paste("La mejor alternativa es la", resultados$AlternativaOptima, "a partir del alpha", resultados$alfa)
+
   return(resultados);
+  return(resultados$Conclusion);
+
   
 }
 
