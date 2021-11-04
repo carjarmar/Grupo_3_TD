@@ -1,6 +1,6 @@
 ---
 title: "Tarea1"
-author: "Maria Dolores, Raquel,Carmen Maria, Pia"
+author: "Maria Dolores Mercado Zafra, Raquel Beltrán Barba, Carmen Maria Jareño Martínez, Pia Baronetzky"
 date: "2/11/2021"
 output:
   html_document:
@@ -11,6 +11,114 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 source("teoriadecision_funciones_incertidumbre.R")
+```
+
+```{r}
+#Definimos aquí primero las funciones creadas
+search.alphas = function(search_vector, Altmax, Altmin, precision, current_digits, favorable=TRUE){
+  if (favorable) {
+    remember = c()
+    indices = c()
+    AltH = search_vector[1] * Altmax + (1-search_vector[1]) * Altmin 
+    previous = which.max.general(AltH)
+    for (i in 2:length(search_vector)){
+      AltH = search_vector[i] * Altmax + (1-search_vector[i]) * Altmin 
+      alternativa = which.max.general(AltH)
+      print(alternativa)
+      if (alternativa != previous){
+        # this will save the two values of alpha for which a change happens
+        remember <- c(remember, search_vector[i])
+        indices <- c(indices, i)
+      }
+      previous = alternativa
+    }
+    if (current_digits < precision){
+      remember = c()
+      for (i in indices){
+        search_vector = seq(search_vector[i-1], search_vector[i], 
+                            by=1/(10^(current_digits+1)))
+        result = search.alphas(search_vector, Altmax, Altmin, precision, current_digits + 1,
+                               favorable=TRUE)
+        remember = c(remember, result)
+      }
+    }
+  } else {
+    
+    remember = c()
+    indices = c()
+    AltH = (1-search_vector[1]) * Altmax +  search_vector[1] * Altmin 
+    previous = which.min.general(AltH)
+    for (i in 2:length(search_vector)){
+      AltH = (1-search_vector[i]) * Altmax + search_vector[i] * Altmin 
+      alternativa = which.min.general(AltH)
+      print(alternativa)
+      if (alternativa != previous){
+        remember <- c(remember, search_vector[i])
+        indices <- c(indices, i)
+      }
+      previous = alternativa
+    }
+    if (current_digits < precision){
+      remember = c()
+      for (i in indices){
+        search_vector = seq(search_vector[i-1], search_vector[i], 
+                            by=1/(10^(current_digits+1)))
+        result = search.alphas(search_vector, Altmax, Altmin, precision, current_digits + 1,
+                               favorable=FALSE)
+        remember = c(remember, result)
+      }
+    }
+  }
+  
+  return(remember)
+}
+
+
+
+  #Funcion pre-definida criterio.Hurwicz con algunas modificaciones
+
+criterio.Hurwicz.mod = function(tablaX,favorable=TRUE, precision = 2) {
+  X = tablaX;
+  if (favorable) {
+    Altmin = apply(X,MARGIN=1,min);
+    Altmax= apply(X,MARGIN=1,max);
+    search_vector = seq(0, 1, by=0.1)
+    Hurwicz = c()
+    Alt_Hurwicz = c()
+    alfas = search.alphas(search_vector, Altmax, Altmin, precision, 1, favorable=TRUE)
+    for (alfa in alfas){
+      AltH =  alfa * Altmax + (1-alfa) * Altmin
+      Alt_Hurwicz = c(Alt_Hurwicz, which.max.general(AltH))
+      Hurwicz = c(Hurwicz, max(AltH))
+      }
+    metodo = 'favorable';
+    Alt_Hurwicz = c()
+  } else {
+    Hurwicz = c()
+    Alt_Hurwicz = c()
+    Altmin = apply(X,MARGIN=1,min);
+    Altmax= apply(X,MARGIN=1,max);
+    search_vector = seq(0, 1, by=0.1)
+    alfas = search.alphas(search_vector, Altmax, Altmin, precision, 1, favorable=FALSE)
+    for (alfa in alfas){
+      AltH = (1-alfa) * Altmax + alfa * Altmin
+      Alt_Hurwicz = c(Alt_Hurwicz, which.min.general(AltH))
+      Hurwicz = c(Hurwicz, min(AltH))
+    }
+    metodo = 'desfavorable';
+  }
+  resultados = list();
+  resultados$criterio = 'Hurwicz';
+  resultados$alfa = alfas;
+  resultados$metodo = metodo;
+  resultados$tablaX = tablaX;
+  resultados$ValorOptimo = Hurwicz;
+  resultados$AlternativaOptima = Alt_Hurwicz;
+  
+  return(resultados);
+  
+}
+
 ```
 
 # Ejercicio 1 (Raquel)
@@ -25,7 +133,7 @@ Fernando y Cristina quieren pedir comida para cenar. Están mirando APPs de serv
 
 ¿A través de qué aplicación deberían pedir Fernando y Cristina?
 
-## Solución
+### Solución
 
 -   Planteamiento:
 
@@ -87,15 +195,26 @@ De los 6 criterios que obtenemos, en 5 de ellos se nos recomienda la tercera opc
 dibuja.criterio.Hurwicz(datos1, favorable=FALSE)
 ```
 
+Veamos ahora qué ocurre al aplicar nuestra función:
+
+```{r}
+alfas1 = criterio.Hurwicz.mod(datos1, favorable = FALSE)
+alfas1$alfa
+```
+
+Se pasa de la decisión 3 (*FoodHome*) a la 2 (*APP del restaurante*) para un alfa de 0.58.
+
+\newpage
+
 # Ejercicio 2 (Maria Dolores)
 
 Ana y Juan se quieren casar y no se ponen de acuerdo, tienen las siguientes opciones:
 
--   Restaurante económico, 13000€ comida, al estar lejos el restaurante los invitados podrían o ir en su coche (esto para los novios, sería un coste de 0 euros) o ir en autobús que eso incrementaría el coste 900 € por cada autobús, además si quieren barra libre tendrían que contratar un servicio extra de 10000€ más.
+-   *Restaurante económico*, 13000€ comida, al estar lejos el restaurante los invitados podrían o ir en su coche (esto para los novios, sería un coste de 0 euros) o ir en autobús que eso incrementaría el coste 900 € por cada autobús, además si quieren barra libre tendrían que contratar un servicio extra de 10000€ más.
 
--   Restaurante más caro, 23000€ comida, pero al estar en la ciudad te ahorras el autobús de ir, además el precio incrementaría 2000€ si quieren contratar la barra libre.
+-   *Restaurante más caro*, 23000€ comida, pero al estar en la ciudad te ahorras el autobús de ir, además el precio incrementaría 2000€ si quieren contratar la barra libre.
 
--   Restaurante intermedio, 17000€ la comida, además los invitados podrían ir en coche o autobús, pero al estar más cerca que el restaurante más económico, supondría un coste de 500€ por cada autobús (se necesitarían 3 autobuses), además si quieren contratar el servicio de barra libre supondría un incremento de 8000€.
+-   *Restaurante intermedio*, 17000€ la comida, además los invitados podrían ir en coche o autobús, pero al estar más cerca que el restaurante más económico, supondría un coste de 500€ por cada autobús (se necesitarían 3 autobuses), además si quieren contratar el servicio de barra libre supondría un incremento de 8000€.
 
 ¿Qué le recomienda que hagan si su objetivo es minimizar los costes?
 
@@ -167,30 +286,36 @@ d3 aparece en 1 método y d1 aparece en 5 métodos luego la mejor alternativa es
 dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
 ```
 
+\newpage
+
 # Ejercicio 3 (Pia)
 
 Ángela está pensando comprarse un producto facial para las arrugas. Ha ido al dermatólogo y éste le ha propuesto tres opciones, ya que cada una tiene precios diferentes pero no tienen por qué funcionar. Estas opciones son:
 
--   Comprar la crema AntiAge, que cuesta 28,95 euros el bote de 120ml. Este bote le durará 3 semanas. Si resulta que esta crema le va bien, no le hará falta comprar más, pero si aún sigue teniendo arrugas, tendrá que comprar 2 botes más.
+-   Comprar la crema *AntiAge*, que cuesta 28,95 euros el bote de 120ml. Este bote le durará 3 semanas. Si resulta que esta crema le va bien, no le hará falta comprar más, pero si aún sigue teniendo arrugas, tendrá que comprar 2 botes más.
 
--   Hacerse una cirugía en una clínica privada, que le garantiza la eliminación de las arrugas pero tendrá un costo de 80 euros.
+-   Hacerse una cirugía en una *clínica privada*, que le garantiza la eliminación de las arrugas pero tendrá un costo de 80 euros.
 
--   Comprar un pack rejuvenecedor, que tiene un precio de 30 euros. Si los productos de este pack le sirven, sólo tendrá que comprarse un bote de crema hidratante por el precio de 9,95 euros; sino, deberá comprarse otro producto de la misma marca que actuará más fuerte y costará 15 euros
+-   Comprar un *pack rejuvenecedo*r, que tiene un precio de 30 euros. Si los productos de este pack le sirven, sólo tendrá que comprarse un bote de crema hidratante por el precio de 9,95 euros; sino, deberá comprarse otro producto de la misma marca que actuará más fuerte y costará 15 euros
 
 ¿Cuál de las tres opciones debería elegir Ángela?
 
 ## Solución
 
+\newpage
+
 # Ejercicio 4 (Carmen María)
 
 Álvaro quiere practicar algún deporte, sin embargo no sabe por cual decantarse:
 
--   Natación: Pagando 120€ al mes puede acudir a la piscina cuando quiera y usar el material que esté disponible. La piscina está muy lejos de su casa. Tiene la posibilidad de ir en tren, cuyo viaje (ida y vuelta) cuesta 4.10€. Y andar hasta el recinto. O bien, ir andando hasta la piscina. Practicó este deporte hace un par de años, por lo que no necesita comprar bañador, gafas, gorro... Iría 2 veces en semana (8 veces al mes).
+-   *Natación*: Pagando 120€ al mes puede acudir a la piscina cuando quiera y usar el material que esté disponible. La piscina está muy lejos de su casa. Tiene la posibilidad de ir en tren, cuyo viaje (ida y vuelta) cuesta 4.10€. Y andar hasta el recinto. O bien, ir andando hasta la piscina. Practicó este deporte hace un par de años, por lo que no necesita comprar bañador, gafas, gorro... Iría 2 veces en semana (8 veces al mes).
 
--   Ciclismo: Siempre le ha gustado montar en bicicleta y darse largos paseos por el campo con ella. Hace un par de meses le robaron la suya, por lo que para practicar este deporte tendría que comprarse una nueva, ha estado mirando y cree que le costaría 245€.
+-   *Ciclismo:* Siempre le ha gustado montar en bicicleta y darse largos paseos por el campo con ella. Hace un par de meses le robaron la suya, por lo que para practicar este deporte tendría que comprarse una nueva, ha estado mirando y cree que le costaría 245€.
 
--   Equitación: La cuota mensual es de 75€. Puede ir en coche, lo que le costaría 15€ de gasolina cada día que practicara el deporte (3 días en semana, 12 días al mes), o bien andando.
+-   *Equitación*: La cuota mensual es de 75€. Puede ir en coche, lo que le costaría 15€ de gasolina cada día que practicara el deporte (3 días en semana, 12 días al mes), o bien andando.
 
 ¿Cuál sería la mejor opción, si quiere ahorrar la mayor cantidad de dinero posible en un mes?
 
 ## Solución
+
+\newpage
