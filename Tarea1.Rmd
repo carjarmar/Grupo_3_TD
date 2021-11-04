@@ -17,23 +17,85 @@ source("teoriadecision_funciones_incertidumbre.R")
 
 Fernando y Cristina quieren pedir comida para cenar. Están mirando APPs de servicio a domicilio y han encontrado lo siguiente:
 
--   Pueden pedir por FoodHome, que tienen gastos de envío por un valor de 1.9 euros más un 10% del coste de la comida que pidan que se cobra como servicio. El coste de la comida es en total 18.95 euros. Si consiguieran encontrar un descuento, sería el de gastos de envío gratis.
+-   Pueden pedir por *FoodHome*, que tienen gastos de envío por un valor de 1.9 euros más un 10% del coste de la comida que pidan que se cobra como servicio. El coste de la comida es en total 18.95 euros. Si consiguieran encontrar un descuento, sería el de gastos de envío gratis.
 
--   Pueden pedir por la propia APP del restaurante al que van a pedir, que no tiene gastos de envío, pero la cena cuesta 22.5 euros. Si consiguieran algún cupón sería de 2 euros de descuento.
+-   Pueden pedir por la propia *APP del restaurante* al que van a pedir, que no tiene gastos de envío, pero la cena cuesta 22.5 euros. Si consiguieran algún cupón sería de 2 euros de descuento.
 
--   La otra opción que tienen es pedir por la APP PeopleEats, que como tienen que registrarse por primera vez les regalan el envío gratis y el servicio. Sólo tendrían que pagar lo que cueste la cena, que serían alrededor de unos 21.35 euros. ¿A través de qué aplicación deberían pedir Fernando y Cristina?
+-   La otra opción que tienen es pedir por la APP *PeopleEats*, que como tienen que registrarse por primera vez les regalan el envío gratis y el servicio. Sólo tendrían que pagar lo que cueste la cena, que serían alrededor de unos 21.35 euros.
+
+¿A través de qué aplicación deberían pedir Fernando y Cristina?
 
 ## Solución
+
+-   Planteamiento:
+
+    -   Un decisior (dos personas que actuan como un único decisor).
+
+    -   Modelo de costos (desfavorable: quieren gastar el menor dinero posible).
+
+    -   Alternativas:
+
+        -   d1 = "FoodHome"
+
+        -   d2 = "APP del restaurante"
+
+        -   d3 = "PeopleEats"
+
+    -   Estados de la naturaleza:
+
+        -   e1 = "No consiguen descuento"
+
+        -   e2 = "Consiguen descuento"
+
+    -   Valoraciones (costos de los dos):
+
+        -   Estado e1 :
+
+            -   $x_{1,1}=$ `r 1.9 + 1.1*18.95`
+
+            -   $x_{2,1}=$ `r 22.5`
+
+            -   $x_{3,1}=$ `r 21.35`
+
+        -   Estado e2 :
+
+            -   $x_{1,2}=$ `r 1.1*18.95`
+
+            -   $x_{2,2}=$ `r 22.5 - 2`
+
+            -   $x_{3,2}=$ `r 21.35`
+
+-   Introducción de datos:
+
+```{r}
+datos1 = crea.tablaX(c(22.745, 20.845, 
+                     22.5, 20.5,
+                     21.35, 21.35), numalternativas = 3, numestados = 2)
+datos1
+```
+
+-   Resolución:
+
+```{r}
+sol1 = criterio.Todos(datos1, alfa=0.3, favorable=FALSE)
+sol1
+```
+
+De los 6 criterios que obtenemos, en 5 de ellos se nos recomienda la tercera opción, ***APP PeopleEats.***
+
+```{r}
+dibuja.criterio.Hurwicz(datos1, favorable=FALSE)
+```
 
 # Ejercicio 2 (Maria Dolores)
 
 Ana y Juan se quieren casar y no se ponen de acuerdo, tienen las siguientes opciones:
 
-• Restaurante económico, 13000€ comida, al estar lejos el retaurante los invitados podrían o ir en su coche (esto para los novios, sería un coste de 0 euros) o ir en autobús que eso incrementaría el coste 900 € por cada autobús, además si quieren barra libre tendrían que contratar un servicio extra de 10000€ más.
+-   Restaurante económico, 13000€ comida, al estar lejos el restaurante los invitados podrían o ir en su coche (esto para los novios, sería un coste de 0 euros) o ir en autobús que eso incrementaría el coste 900 € por cada autobús, además si quieren barra libre tendrían que contratar un servicio extra de 10000€ más.
 
-• Restaurante más caro, 23000€ comida, pero al estar en la ciudad te ahorras el autobús de ir, además el precio incrementaría 2000€ si quieren contratar la barra libre.
+-   Restaurante más caro, 23000€ comida, pero al estar en la ciudad te ahorras el autobús de ir, además el precio incrementaría 2000€ si quieren contratar la barra libre.
 
-• Restaurante intermedio, 17000€ la comida, además los invitados podrían ir en coche o autobús, pero al estar más cerca que el restaurante más económico, supondría un coste de 500€ por cada autobús (se necesitarían 3 autobuses), además si quieren contratar el servicio de barra libre supondría un incremento de 8000€.
+-   Restaurante intermedio, 17000€ la comida, además los invitados podrían ir en coche o autobús, pero al estar más cerca que el restaurante más económico, supondría un coste de 500€ por cada autobús (se necesitarían 3 autobuses), además si quieren contratar el servicio de barra libre supondría un incremento de 8000€.
 
 ¿Qué le recomienda que hagan si su objetivo es minimizar los costes?
 
@@ -41,70 +103,69 @@ Ana y Juan se quieren casar y no se ponen de acuerdo, tienen las siguientes opci
 
 -   Planteamiento:
 
-    -    Un decisor (dos personas que actúan como un único decisor)
+    -   Un decisor (dos personas que actúan como un único decisor)
 
-    -    Modelo de costos (desfavorable)
+    -   Modelo de costos (desfavorable)
 
-```{=html}
-<!-- -->
-```
 -   Alternativas:
 
     -   d1= "Restaurante 1"
 
-    -    d2="Restaurante 2"
+    -   d2="Restaurante 2"
 
-    -    d3="Restaurante 3"
+    -   d3="Restaurante 3"
 
 -   Estados de la naturaleza:
 
-    -    e1 = "Comer, ir en autobús y barra libre"
+    -   e1 = "Comer, ir en autobús y barra libre"
 
-    -    e2 = "Comer, ir en coche o andando y sin barra libre"
+    -   e2 = "Comer, ir en coche o andando y sin barra libre"
 
-```{=html}
 <!-- -->
-```
+
 -   Valoraciones (costos de los dos):
 
-    -    Estado e1:
+    -   Estado e1:
 
-        -    $x_{1,1}$ = `13000 + 900*3 + 10000`
+        -   Estado e1 :
 
-        -    $x_{2,1}$ = `23000 + 2000`
+            -   $x_{1,1}=$ `r 13000 + 900*3 + 10000`
 
-        -    $x_{3,1}$ = `17000 + 400*3 + 6000`
+            -   $x_{2,1}=$ `r 23000 + 2000`
 
-    -    Estado e2:
+            -   $x_{3,1}=$ `r 17000 + 400*3 + 6000`
 
-        -    $x_{1,2}$ = `13000`
+        -   Estado e2 :
 
-        -    $x_{2,2}$ = `23000`
+            -   $x_{1,2}=$ `r 13000`
 
-        -    $x_{3,2}$ = `17000`
+            -   $x_{2,2}=$ `r 23000`
 
-```{=html}
-<!-- -->
-```
+            -   $x_{3,2}=$ `r 17000`
+
 -   Introducción de datos:
 
     ```{r}
 
-    datos=crea.tablaX(c(25700,13000,
+    datos2=crea.tablaX(c(25700,13000,
                        25000,23000,
                        24200,17000),3,2)
-    datos
+    datos2
     ```
 
 -   Resolución:
 
     ```{r}
-    sol = criterio.Todos(datos,alfa=0.5,favorable = F)
-    sol
+    sol2 = criterio.Todos(datos2,alfa=0.5,favorable = F)
+    sol2
 
     ```
 
 d3 aparece en 1 método y d1 aparece en 5 métodos luego la mejor alternativa es: **d1 = "Restaurante 1"**
+
+```{r}
+dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
+```
 
 # Ejercicio 3 (Pia)
 
@@ -114,7 +175,7 @@ d3 aparece en 1 método y d1 aparece en 5 métodos luego la mejor alternativa es
 
 -   Hacerse una cirugía en una clínica privada, que le garantiza la eliminación de las arrugas pero tendrá un costo de 80 euros.
 
-Comprar un pack rejuvenecedor, que tiene un precio de 30 euros. Si los productos de este pack le sirven, sólo tendrá que comprarse un bote de crema hidratante por el precio de 9,95 euros; sino, deberá comprarse otro producto de la misma marca que actuará más fuerte y costará 15 euros
+-   Comprar un pack rejuvenecedor, que tiene un precio de 30 euros. Si los productos de este pack le sirven, sólo tendrá que comprarse un bote de crema hidratante por el precio de 9,95 euros; sino, deberá comprarse otro producto de la misma marca que actuará más fuerte y costará 15 euros
 
 ¿Cuál de las tres opciones debería elegir Ángela?
 
