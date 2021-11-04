@@ -351,7 +351,7 @@ dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
 -   Introducción de datos:
 
 ```{r}
-tb = crea.tablaX(c(152.8,120,
+datos4 = crea.tablaX(c(152.8,120,
                      245, 245,
                      270, 246,
                      180, 60), numalternativas = 4, numestados = 2)
@@ -360,8 +360,8 @@ tb = crea.tablaX(c(152.8,120,
 
 
 ```{r}
-sol05= criterio.Todos(tb, alfa = 0.5, favorable = FALSE)
-sol05
+sol4= criterio.Todos(datos4, alfa = 0.5, favorable = FALSE)
+sol4
 ```
 
 La mejor alternativa por todos los métodos es d4, excepto por el método de Wald que es d1 (Natación). Por tanto, la mejor alternativa es practicar equitación.
@@ -371,9 +371,9 @@ La mejor alternativa por todos los métodos es d4, excepto por el método de Wal
 colnames(tb)=c('e1','e2')
 rownames(tb)=c('Natación','Ciclismo','Patinaje','Equitación')
 
-criterio.Hurwicz.mod(tb, favorable = FALSE)
+criterio.Hurwicz.mod(datos4, favorable = FALSE)
 
-dibuja.criterio.Hurwicz(tb, favorable = FALSE)
+dibuja.criterio.Hurwicz(datos4, favorable = FALSE)
 ```
 
 
