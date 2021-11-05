@@ -25,6 +25,7 @@ Raquel creo el fichero enunciados el cual hemos ido modificando a medida que
 ibamos creado su resolución.
 
 - TAREA INDIVIDUAL
+
 Una vez realizada la funcion.R decidimos realizar el trabajo individual,
 quedamos en que cada una de nosotras iba a hacer el enunciado de su ejercicio 
 y posteriormente resolverlo mediante todos los métodos vistos en clase
