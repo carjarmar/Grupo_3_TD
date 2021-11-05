@@ -107,3 +107,48 @@ criterio.Hurwicz.mod = function(tablaX,favorable=TRUE, precision = 2) {
 
 
 
+
+## EJEMPLOS PARA PROBAR LA FUNCION ##
+
+    #ejemplo 1
+#X1 = matrix(c(5,4,6,2,3,1,-1,8,7,5,2,0),nrow=4,ncol=3,byrow=TRUE)
+#colnames(X1)=c('e1','e2','e3')
+#rownames(X1)=c('d1','d2','d3','d4')
+
+#which.min.general(c(3,2,8,2,9,2))
+
+#criterio.Hurwicz.mod(X1)
+#dibuja.criterio.Hurwicz(X1)
+
+
+
+    #ejemplo 2 (ejercicio relacion 1.4)
+#tablaX = crea.tablaX(c(2160,360,720,720,3480,480), numalternativas = 3, numestados = 2)
+#colnames(tablaX)=c('e1','e2')
+#rownames(tablaX)=c('d1','d2','d3')
+
+#(caso no favorable)
+#criterio.Hurwicz.mod(tablaX, favorable = FALSE)
+#dibuja.criterio.Hurwicz(tablaX, favorable = FALSE)
+
+
+
+    #ejemplo 3 (ejercicio relacion 1.5)
+#X3 = crea.tablaX(c(125,120,156,60,130,80), numalternativas = 3, numestados = 2)
+#colnames(X3)=c('e1','e2')
+#rownames(X3)=c('d1','d2','d3')
+
+#(caso no favorable, y con dos puntos de corte, luego deberia darnos 2 alfas diferentes)
+#criterio.Hurwicz.mod(X3, favorable = FALSE)
+#dibuja.criterio.Hurwicz(X3, favorable = FALSE)
+
+
+
+    #ejemplo 4 (ejercicio relacion 1.6)
+#X4 = crea.tablaX(c(55,5,70,-30,85,-65), numalternativas = 3, numestados = 2)
+#colnames(X4)=c('e1','e2')
+#rownames(X4)=c('d1','d2','d3')
+
+#(caso favorable)
+#criterio.Hurwicz.mod(X4)
+#dibuja.criterio.Hurwicz(X4)
