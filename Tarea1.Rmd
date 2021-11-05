@@ -10,118 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-source("teoriadecision_funciones_incertidumbre.R")
-```
-
-```{r}
-#Definimos aquí primero las funciones creadas
-search.alphas = function(search_vector, Altmax, Altmin, precision, current_digits, favorable=TRUE){
-  if (favorable) {
-    remember = c()
-    indices = c()
-    AltH = search_vector[1] * Altmax + (1-search_vector[1]) * Altmin 
-    previous = which.max.general(AltH)
-    for (i in 2:length(search_vector)){
-      AltH = search_vector[i] * Altmax + (1-search_vector[i]) * Altmin 
-      alternativa = which.max.general(AltH)
-      print(alternativa)
-      if (alternativa != previous){
-        # this will save the two values of alpha for which a change happens
-        remember <- c(remember, search_vector[i])
-        indices <- c(indices, i)
-      }
-      previous = alternativa
-    }
-    if (current_digits < precision){
-      remember = c()
-      for (i in indices){
-        search_vector = seq(search_vector[i-1], search_vector[i], 
-                            by=1/(10^(current_digits+1)))
-        result = search.alphas(search_vector, Altmax, Altmin, precision, current_digits + 1,
-                               favorable=TRUE)
-        remember = c(remember, result)
-      }
-    }
-  } else {
-    
-    remember = c()
-    indices = c()
-    AltH = (1-search_vector[1]) * Altmax +  search_vector[1] * Altmin 
-    previous = which.min.general(AltH)
-    for (i in 2:length(search_vector)){
-      AltH = (1-search_vector[i]) * Altmax + search_vector[i] * Altmin 
-      alternativa = which.min.general(AltH)
-      print(alternativa)
-      if (alternativa != previous){
-        remember <- c(remember, search_vector[i])
-        indices <- c(indices, i)
-      }
-      previous = alternativa
-    }
-    if (current_digits < precision){
-      remember = c()
-      for (i in indices){
-        search_vector = seq(search_vector[i-1], search_vector[i], 
-                            by=1/(10^(current_digits+1)))
-        result = search.alphas(search_vector, Altmax, Altmin, precision, current_digits + 1,
-                               favorable=FALSE)
-        remember = c(remember, result)
-      }
-    }
-  }
-  
-  return(remember)
-}
-
-
-
-  #Funcion pre-definida criterio.Hurwicz con algunas modificaciones
-
-criterio.Hurwicz.mod = function(tablaX,favorable=TRUE, precision = 2) {
-  X = tablaX;
-  if (favorable) {
-    Altmin = apply(X,MARGIN=1,min);
-    Altmax= apply(X,MARGIN=1,max);
-    search_vector = seq(0, 1, by=0.1)
-    Hurwicz = c()
-    Alt_Hurwicz = c()
-    alfas = search.alphas(search_vector, Altmax, Altmin, precision, 1, favorable=TRUE)
-    for (alfa in alfas){
-      AltH =  alfa * Altmax + (1-alfa) * Altmin
-      Alt_Hurwicz = c(Alt_Hurwicz, which.max.general(AltH))
-      Hurwicz = c(Hurwicz, max(AltH))
-      }
-    metodo = 'favorable';
-    Alt_Hurwicz = c()
-  } else {
-    Hurwicz = c()
-    Alt_Hurwicz = c()
-    Altmin = apply(X,MARGIN=1,min);
-    Altmax= apply(X,MARGIN=1,max);
-    search_vector = seq(0, 1, by=0.1)
-    alfas = search.alphas(search_vector, Altmax, Altmin, precision, 1, favorable=FALSE)
-    for (alfa in alfas){
-      AltH = (1-alfa) * Altmax + alfa * Altmin
-      Alt_Hurwicz = c(Alt_Hurwicz, which.min.general(AltH))
-      Hurwicz = c(Hurwicz, min(AltH))
-    }
-    metodo = 'desfavorable';
-  }
-  resultados = list();
-  resultados$criterio = 'Hurwicz';
-  resultados$alfa = alfas;
-  resultados$metodo = metodo;
-  resultados$tablaX = tablaX;
-  resultados$ValorOptimo = Hurwicz;
-  resultados$AlternativaOptima = Alt_Hurwicz;
-  resultados$Conclusion = paste("La mejor alternativa es la", resultados$AlternativaOptima, "a partir del alpha", resultados$alfa)
-
-  return(resultados);
-  return(resultados$Conclusion);
-
-  
-}
-
+source("function.R")
 ```
 
 # Ejercicio 1 (Raquel)
@@ -182,10 +71,10 @@ Fernando y Cristina quieren pedir comida para cenar. Están mirando APPs de serv
 datos1 = crea.tablaX(c(22.745, 20.845, 
                      22.5, 20.5,
                      21.35, 21.35), numalternativas = 3, numestados = 2)
-datos1
 
 colnames(datos1)=c('e1','e2')
 rownames(datos1)=c('FoodHome','APP restarante','PeopleEats')
+datos1
 ```
 
 -   Resolución:
