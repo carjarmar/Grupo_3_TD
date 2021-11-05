@@ -1,5 +1,5 @@
 ---
-title: "Tarea1"
+title: "Tarea 1"
 author: "Maria Dolores Mercado Zafra, Raquel Beltrán Barba, Carmen Maria Jareño Martínez, Pia Baronetzky"
 date: "2/11/2021"
 output:
