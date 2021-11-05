@@ -1,45 +1,46 @@
 # Grupo_3_TD
 
-- ORGANIZACIÓN
+- ORGANIZACIÓN:
 
-Lo primero, Carmen María que es la encargada del grupo creó un grupo de WhatsApp,
+Lo primero, Carmen María que es la encargada del grupo creó uno de WhatsApp,
 para saber quienes eramos los integrantes del grupo y poder así organizar una
-reunión. Uno de los integrantes del grupo ALBERTO GUTIERREZ CORONADO, nos ha
-resultado imposible contactar con él, posteriormente realizamos una reunión
-online en la cual estuvimos hablando de realizar la función entre todas y luego
-realizar cada una su enunciado del ejercicio, resuelto con los criterios vistos
-en clase y la nueva función creada, posteriormente Carmen María se encargó de 
-crear el repositorio Git y nos dió acceso a las demás para que pudieramos 
-modificar cualquier archivo.
+reunión. Uno de nuestros compañeros ALBERTO GUTIERREZ CORONADO, nos ha
+resultado imposible contactar con él.
+
+Realizamos una reunión online en la cual estuvimos hablando de crear la función 
+entre todas y luego realizar cada una su enunciado del ejercicio, resuelto con 
+los criterios vistos en clase y la nueva función creada anteriormente.
+
+Carmen María se encargó de crear el repositorio Git y nos dio acceso a las 
+demás para que pudiéramos modificar cualquier archivo.
 
 
-- TAREA CONJUNTA
+- TAREA CONJUNTA:
 
-Pia fue la que creo el fichero function.R y dió la primera idea de como hacer la
-función, y lo subió a Git, posteriormente las demás fuimos modificando esa
+Pia fue la que creó el fichero "function.R" y dio la primera idea de como hacer 
+la función, y lo subió a Git. Posteriormente las demás fuimos modificando esa
 función.
 
-Además añadimos issues en Git para ver que podiamos mejorar.
+Además añadimos issues en Git para ver que podíamos mejorar.
 
-Raquel creo el fichero enunciados el cual hemos ido modificando a medida que
-ibamos creado su resolución.
+Raquel creó el fichero "enunciados" el cual hemos ido modificando a medida que
+lo hemos ido resolviendo los ejercicios.
 
-- TAREA INDIVIDUAL
+- TAREA INDIVIDUAL:
 
-Una vez realizada la funcion.R decidimos realizar el trabajo individual,
-quedamos en que cada una de nosotras iba a hacer el enunciado de su ejercicio 
-y posteriormente resolverlo mediante todos los métodos vistos en clase
-y aplicar la nueva función creada.
+Una vez creada "funcion.R" decidimos realizar el trabajo individual. Quedamos 
+en que cada una de nosotras iba a hacer el enunciado de su ejercicio 
+y resolverlo mediante todos los métodos vistos en clase a demás de aplicar la 
+nueva función creada.
 
-Para hacer los ejercicios individuales, si teníamos alguna duda la preguntábamos
-por el chat y lo resolvíamos entre todas.
+Para hacerlos, si teníamos alguna duda la preguntábamos por el chat y 
+lo resolvíamos entre todas. Una vez acabados los ejercicios María dolores creó 
+el Rmd y cada una fue subiendo su ejercicio y modificando el fichero mediante 
+"pull" y "push".
 
-Una vez teníamos los ejercicios María dolores creó el Rmd y cada una fue subiendo 
-su ejercicio y modificando el fichero mediante pull y push.
+Una vez subidos los ejercicios, nos dimos cuenta que ninguno tenía dos alphas,
+por lo que decidimos crear uno nuevo que sí los tuviera, y así comprobar que la 
+función es correcta. Este ejercicio lo creamos entre todas.
 
-Una vez subidos los ejercicios, nos dimos cuenta que ninguno tenia dos alphas,
-por lo que decidimos crear un nuevo enunciado que tuviera dos alphas, para 
-comprobar que la función es correcta. Este ejercicio lo creamos entre todas.
-
-Por último, hicimos la creación del README.md, que lo escribió Maria Dolores, 
-aunque todas participamos en lo que se iba poner.
+Por último, hicimos la creación del "README.md"", que lo escribió Maria Dolores, 
+aunque todas participamos en su redacción.
