@@ -42,5 +42,5 @@ Una vez subidos los ejercicios, nos dimos cuenta que ninguno tenía dos alphas,
 por lo que decidimos crear uno nuevo que sí los tuviera, y así comprobar que la 
 función es correcta. Este ejercicio lo creamos entre todas.
 
-Por último, hicimos la creación del "README.md"", que lo escribió Maria Dolores, 
+Por último, hicimos la creación del "README.md", que lo escribió Maria Dolores, 
 aunque todas participamos en su redacción.
