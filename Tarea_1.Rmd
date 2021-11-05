@@ -1,0 +1,399 @@
+---
+title: "Trabajo Teoría Decisión: Métodos Incertidumbre"
+author: "Maria Dolores Mercado Zafra, Raquel Beltrán Barba, Carmen Maria Jareño Martínez, Pia Baronetzky"
+date: "5/11/2021"
+output:
+  pdf_document:
+    number_sections: yes
+    toc: yes
+lang: es
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(knitr)
+library(kableExtra)
+
+source("function.R")
+```
+
+\newpage
+\setlength{\parindent}{12pt}
+
+# Ejercicio 1 (Raquel)
+
+Fernando y Cristina quieren pedir comida para cenar. Están mirando APPs de servicio a domicilio y han encontrado lo siguiente:
+
+-   Pueden pedir por *FoodHome*, que tienen gastos de envío por un valor de 1.9 euros más un 10% del coste de la comida que pidan que se cobra como servicio. El coste de la comida es en total 18.95 euros. Si consiguieran encontrar un descuento, sería el de gastos de envío gratis.
+
+-   Pueden pedir por la propia *APP del restaurante* al que van a pedir, que no tiene gastos de envío, pero la cena cuesta 22.5 euros. Si consiguieran algún cupón sería de 2 euros de descuento.
+
+-   La otra opción que tienen es pedir por la APP *PeopleEats*, que como tienen que registrarse por primera vez les regalan el envío gratis y el servicio. Sólo tendrían que pagar lo que cueste la cena, que serían alrededor de unos 21.35 euros.
+
+¿A través de qué aplicación deberían pedir Fernando y Cristina?
+
+### Solución
+
+-   Planteamiento:
+
+    -   Un decisor (dos personas que actúan como un único decisor).
+
+    -   Modelo de costos (desfavorable: quieren gastar el menor dinero posible).
+
+    -   Alternativas:
+
+        -   d1 = "FoodHome"
+
+        -   d2 = "APP del restaurante"
+
+        -   d3 = "PeopleEats"
+
+    -   Estados de la naturaleza:
+
+        -   e1 = "No consiguen descuento"
+
+        -   e2 = "Consiguen descuento"
+
+    -   Valoraciones (costos de los dos):
+
+        -   Estado e1 :
+
+            -   $x_{1,1}=$ `r 1.9 + 1.1*18.95`
+
+            -   $x_{2,1}=$ `r 22.5`
+
+            -   $x_{3,1}=$ `r 21.35`
+
+        -   Estado e2 :
+
+            -   $x_{1,2}=$ `r 1.1*18.95`
+
+            -   $x_{2,2}=$ `r 22.5 - 2`
+
+            -   $x_{3,2}=$ `r 21.35`
+
+-   Introducción de datos:
+
+```{r}
+datos1 = crea.tablaX(c(22.745, 20.845, 
+                       22.5, 20.5,
+                       21.35, 21.35), numalternativas = 3, numestados = 2)
+
+colnames(datos1)=c('e1','e2')
+rownames(datos1)=c('FoodHome','APP restarante','PeopleEats')
+
+kable(datos1,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+-   Resolución:
+
+```{r}
+sol1 = criterio.Todos(datos1, alfa=0.3, favorable=FALSE)
+
+kable(sol1,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+De los 6 criterios que obtenemos, en 5 de ellos se nos recomienda la tercera opción, ***APP PeopleEats***. Excepto por el método Optimista que recomienda ***APP del restaurante***.
+
+A continuación, representamos el gráfico del criterio de Hurwicz:
+
+```{r,fig.width=10, fig.height=4, fig.align="center"}
+dibuja.criterio.Hurwicz(datos1, favorable=FALSE)
+```
+
+Y vemos qué ocurre al aplicar nuestra función:
+
+```{r}
+criterio.Hurwicz.mod(datos1, favorable = FALSE)
+```
+
+Se pasa de la decisión 3 (*FoodHome*) a la 2 (*APP del restaurante*) para un alfa de 0.6
+
+\newpage
+
+# Ejercicio 2 (Maria Dolores)
+
+Ana y Juan se quieren casar y no se ponen de acuerdo, tienen las siguientes opciones:
+
+-   *Restaurante 1*, 13000€ comida, al estar lejos el restaurante los invitados podrían o ir en su coche (esto para los novios, sería un coste de 0 euros) o ir en autobús que eso incrementaría el coste 900 € por cada autobús, además si quieren barra libre tendrían que contratar un servicio extra de 10000€ más.
+
+-   *Restaurante 2*, 23000€ comida, pero al estar en la ciudad te ahorras el autobús de ir, además el precio incrementaría 2000€ si quieren contratar la barra libre.
+
+-   *Restaurante i3*, 17000€ la comida, además los invitados podrían ir en coche o autobús, pero al estar más cerca que el restaurante más económico, supondría un coste de 500€ por cada autobús (se necesitarían 3 autobuses), además si quieren contratar el servicio de barra libre supondría un incremento de 8000€.
+
+¿Qué le recomienda que hagan si su objetivo es minimizar los costes?
+
+### Solución
+
+-   Planteamiento:
+
+    -   Un decisor (dos personas que actúan como un único decisor)
+
+    -   Modelo de costos (desfavorable)
+
+-   Alternativas:
+
+    -   d1= "Restaurante 1"
+
+    -   d2="Restaurante 2"
+
+    -   d3="Restaurante 3"
+
+-   Estados de la naturaleza:
+
+    -   e1 = "Comer, ir en autobús y barra libre"
+
+    -   e2 = "Comer, ir en coche o andando y sin barra libre"
+
+-   Valoraciones (costos de los dos):
+
+    -   Estado e1:
+
+        -   Estado e1 :
+
+            -   $x_{1,1}=$ `r 13000 + 900*3 + 10000`
+
+            -   $x_{2,1}=$ `r 23000 + 2000`
+
+            -   $x_{3,1}=$ `r 17000 + 400*3 + 6000`
+
+        -   Estado e2 :
+
+            -   $x_{1,2}=$ `r 13000`
+
+            -   $x_{2,2}=$ `r 23000`
+
+            -   $x_{3,2}=$ `r 17000`
+
+-   Introducción de datos:
+
+```{r}
+datos2=crea.tablaX(c(25700,13000,
+                     25000,23000,
+                     24200,17000),numalternativas = 3, numestados = 2)
+
+colnames(datos2)=c('e1','e2')
+rownames(datos2)=c('Restaurante 1','Restaurante 2','Restaurante 3')
+
+kable(datos2,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+-   Resolución:
+
+```{r}
+sol2 = criterio.Todos(datos2,alfa=0.5,favorable = F)
+
+kable(sol2,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+De los 6 criterios que obtenemos, en 5 de ellos se nos recomienda la primera opción, **Restaurante 1** Excepto por el método de Wald que recomienda **Restaurante 3**.
+
+A continuación, representamos el gráfico del criterio de Hurwicz:
+
+```{r,fig.width=10, fig.height=4, fig.align="center"}
+dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
+```
+
+Y vemos qué ocurre al aplicar nuestra función:
+
+```{r}
+criterio.Hurwicz.mod(datos2, favorable = FALSE)
+```
+
+Se pasa de la decisión 3 (*Restaurante 3*) a la 1 (*Restaurante 1*) para un alfa de 0.3
+
+\newpage
+
+\newpage
+
+# Ejercicio 3 (Carmen María)
+
+Álvaro quiere practicar algún deporte, sin embargo no sabe por cual decantarse:
+
+-   *Natación*: Pagando 120€ al mes puede acudir a la piscina cuando quiera y usar el material que esté disponible. La piscina está muy lejos de su casa. Tiene la posibilidad de ir en tren, cuyo viaje (ida y vuelta) cuesta 4.10€. Y andar hasta el recinto. O bien, ir andando hasta la piscina. Practicó este deporte hace un par de años, por lo que no necesita comprar bañador, gafas, gorro... Iría 2 veces en semana (8 veces al mes).
+
+-   *Ciclismo:* Siempre le ha gustado montar en bicicleta y darse largos paseos por el campo con ella. Hace un par de meses le robaron la suya, por lo que para practicar este deporte tendría que comprarse una nueva, ha estado mirando y cree que le costaría 245€.
+
+-   *Equitación*: La cuota mensual es de 75€. Puede ir en coche, lo que le costaría 15€ de gasolina cada día que practicara el deporte (3 días en semana, 12 días al mes), o bien andando.
+
+¿Cuál sería la mejor opción, si quiere ahorrar la mayor cantidad de dinero posible en un mes?
+
+### Solución
+
+-   Planteamiento:
+
+    -   Un decisor
+
+    -   Modelo de costos (desfavorable)
+
+    -   Alternativas:
+
+        -   d1= "Natación"
+        -   d2= "Ciclismo"
+        -   d3= "Patinaje"
+        -   d4= "Equitación"
+
+    -   Estados de la naturaleza:
+
+        -   e1= "Practicar deporte y desplazarse en trasporte"
+        -   e2= "Practicar deporte sin pagar transporte"
+
+    -   Valoraciones (costos de los dos)
+
+        -   Estado e1:
+
+            -   $x_{1,1}=$ `r 120+4.10*8`
+            -   $x_{1,2}=$ `r 245`
+            -   $x_{1,3}=$ `r 40+14+192+24`
+            -   $x_{1,4}=$ `r 60+10*12`
+
+        -   Estado e2:
+
+            -   $x_{2,1}=$ `r 120`
+            -   $x_{2,2}=$ `r 245`
+            -   $x_{3,2}=$ `r 40+14+192`
+            -   $x_{4,2}=$ `r 60`
+
+-   Introducción de datos:
+
+```{r}
+datos3 = crea.tablaX(c(152.8,120,
+                       245, 245,
+                       270, 246,
+                       180, 60), numalternativas = 4, numestados = 2)
+
+colnames(datos3)=c('e1','e2')
+rownames(datos3)=c('Natación','Ciclismo','Patinaje','Equitación')
+
+kable(datos3,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+-   Resolución:
+
+```{r}
+sol3= criterio.Todos(datos3, alfa = 0.5, favorable = FALSE)
+
+kable(sol3,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+De los 6 criterios que obtenemos, en 5 de ellos se nos recomienda la cuarta opción, **Equitación**. Excepto por el método de Wald que recomienda **Natación**.
+
+A continuación, representamos el gráfico del criterio de Hurwicz:
+
+```{r,fig.width=10, fig.height=4, fig.align="center"}
+dibuja.criterio.Hurwicz(datos3, favorable = FALSE)
+```
+
+Y vemos qué ocurre al aplicar nuestra función:
+
+```{r}
+criterio.Hurwicz.mod(datos3, favorable = FALSE)
+```
+
+Se pasa de la decisión 1 (*Natación*) a la 4 (*Equitación*) para un alfa de 0.4
+
+
+\newpage
+
+# Ejercicio 4
+
+Ángela está pensando comprarse un producto facial para las arrugas. Ha ido al dermatólogo y éste le ha propuesto tres opciones, ya que cada una tiene precios diferentes pero no tienen por qué funcionar. Estas opciones son:
+
+-   Hacerse una cirugía en una *clínica privada*, que le garantiza la eliminación de las arrugas pero tendrá un costo de 120 euros.
+
+-   Comprar la crema *AntiAge*, que cuesta 75 euros el bote de 120ml. Si resulta que esta crema le va bien, no le hará falta comprar más, pero si aún sigue teniendo arrugas, tendrá que comprar 2 botes más.
+
+-   Comprar un *pack rejuvenecedor*, que tiene un precio de 75 euros. Si los productos de este pack le sirven, sólo tendrá que comprarse un bote de crema hidratante por el precio de 5 euros; sino, deberá comprarse otro producto de la misma marca que actuará más fuerte y costará 50 euros
+
+¿Cuál de las tres opciones debería elegir Ángela?
+
+### Solución
+
+-   Planteamiento:
+
+    -   Un decisor
+
+    -   Modelo de costos (desfavorable: quiere gastar el menor dinero posible).
+
+    -   Alternativas:
+
+        -   d1 = "Clinica privada"
+
+        -   d2 = "AntiAge"
+
+        -   d3 = "Pack rejuvenecedor"
+
+    -   Estados de la naturaleza:
+
+        -   e1 = "No tiene éxito"
+
+        -   e2 = "Tiene éxito"
+
+    -   Valoraciones (costos de los dos):
+
+        -   Estado e1 :
+
+            -   $x_{1,1}=$ `r 120`
+
+            -   $x_{2,1}=$ `r 75*2`
+
+            -   $x_{3,1}=$ `r 75+50`
+
+        -   Estado e2 :
+
+            -   $x_{1,2}=$ `r 120`
+
+            -   $x_{2,2}=$ `r 75`
+
+            -   $x_{3,2}=$ `r 75+5`
+
+<!-- -->
+
+-   Introducción de datos:
+
+```{r}
+datos4 = crea.tablaX(c(120,120,
+                       150, 75,
+                       125, 80), numalternativas = 3, numestados = 2)
+
+colnames(datos4)=c('e1','e2')
+rownames(datos4)=c('Clínica privada','AntiAge', 'Pack rejuvenecedor')
+
+kable(datos4,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+-   Resolución:
+
+```{r}
+sol4 = criterio.Todos(datos4, alfa=0.3, favorable=FALSE)
+
+kable(sol4,longtable=T,booktabs=T)%>%
+kable_styling(latex_options = c("striped","HOLD_position"))
+```
+
+De los 6 criterios que obtenemos, en 4 de ellos se nos recomienda la tercera opción, el **pack rejuvenecedor.**, el método de Wald recomienda **Clínica privada** y el método optimista el **AntiAge**
+
+A continuación, representamos el gráfico del criterio de Hurwicz:
+
+```{r,fig.width=10, fig.height=4, fig.align="center"}
+dibuja.criterio.Hurwicz(datos4, favorable=FALSE)
+```
+
+Veamos ahora qué ocurre al aplicar nuestra función:
+
+```{r}
+criterio.Hurwicz.mod(datos4, favorable = FALSE)
+```
+
+Se pasa de la decisión 1 (*Clínica privada*) a la 3 (*Pack rejuvenecedor*) para un alfa de 0.2, posteriormente a la decisión 2 (*AntiAge*) para un alfa de 0.9
+
+
+
