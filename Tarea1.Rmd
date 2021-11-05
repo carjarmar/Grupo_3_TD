@@ -183,6 +183,9 @@ datos1 = crea.tablaX(c(22.745, 20.845,
                      22.5, 20.5,
                      21.35, 21.35), numalternativas = 3, numestados = 2)
 datos1
+
+colnames(datos1)=c('e1','e2')
+rownames(datos1)=c('FoodHome','APP restarante','PeopleEats')
 ```
 
 -   Resolución:
@@ -201,8 +204,7 @@ dibuja.criterio.Hurwicz(datos1, favorable=FALSE)
 Veamos ahora qué ocurre al aplicar nuestra función:
 
 ```{r}
-alfas1 = criterio.Hurwicz.mod(datos1, favorable = FALSE)
-alfas1$alfa
+criterio.Hurwicz.mod(datos1, favorable = FALSE)
 ```
 
 Se pasa de la decisión 3 (*FoodHome*) a la 2 (*APP del restaurante*) para un alfa de 0.58.
@@ -242,8 +244,6 @@ Ana y Juan se quieren casar y no se ponen de acuerdo, tienen las siguientes opci
     -   e1 = "Comer, ir en autobús y barra libre"
 
     -   e2 = "Comer, ir en coche o andando y sin barra libre"
-
-<!-- -->
 
 -   Valoraciones (costos de los dos):
 
@@ -295,7 +295,7 @@ dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
 
 Ángela está pensando comprarse un producto facial para las arrugas. Ha ido al dermatólogo y éste le ha propuesto tres opciones, ya que cada una tiene precios diferentes pero no tienen por qué funcionar. Estas opciones son:
 
--   Comprar la crema *AntiAge*, que cuesta 28,95 euros el bote de 120ml. Este bote le durará 3 semanas. Si resulta que esta crema le va bien, no le hará falta comprar más, pero si aún sigue teniendo arrugas, tendrá que comprar 2 botes más.
+-   Comprar la crema *AntiAge*, que cuesta 28,95 euros el bote de 120ml. Si resulta que esta crema le va bien, no le hará falta comprar más, pero si aún sigue teniendo arrugas, tendrá que comprar 2 botes más.
 
 -   Hacerse una cirugía en una *clínica privada*, que le garantiza la eliminación de las arrugas pero tendrá un costo de 80 euros.
 
@@ -304,6 +304,80 @@ dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
 ¿Cuál de las tres opciones debería elegir Ángela?
 
 ## Solución
+
+-   Planteamiento:
+
+    -   Un decisor
+
+    -   Modelo de costos (desfavorable: quiere gastar el menor dinero posible).
+
+    -   Alternativas:
+
+        -   d1 = "AntiAge"
+
+        -   d2 = "Clínica privada"
+
+        -   d3 = "Pack rejuvenecedor"
+
+    -   Estados de la naturaleza:
+
+        -   e1 = "Tiene éxito"
+
+        -   e2 = "No tiene éxito"
+
+    -   Valoraciones (costos de los dos):
+
+        -   Estado e1 :
+
+            -   $x_{1,1}=$ `r 28.95`
+
+            -   $x_{2,1}=$ `r 80`
+
+            -   $x_{3,1}=$ `r 30 + 9.95`
+
+        -   Estado e2 :
+
+            -   $x_{1,2}=$ `r 28.95*3`
+
+            -   $x_{2,2}=$ `r 80`
+
+            -   $x_{3,2}=$ `r 30 + 15`
+
+```{=html}
+<!-- -->
+```
+-   Introducción de datos:
+
+```{r}
+datos1 = crea.tablaX(c(28.95, 86.85,
+                     80, 80,
+                     39.95, 45), numalternativas = 3, numestados = 2)
+datos1
+
+colnames(datos1)=c('e1','e2')
+rownames(datos1)=c('AntiAge','Clínica','Pack Rej.')
+```
+
+-   Resolución:
+
+```{r}
+sol1 = criterio.Todos(datos1, alfa=0.3, favorable=FALSE)
+sol1
+```
+
+De los 6 criterios que obtenemos, en 5 de ellos se nos recomienda la tercera opción, el **pack rejuvenecedor.**
+
+```{r}
+dibuja.criterio.Hurwicz(datos1, favorable=FALSE)
+```
+
+Veamos ahora qué ocurre al aplicar nuestra función:
+
+```{r}
+criterio.Hurwicz.mod(datos1, favorable = FALSE)
+```
+
+Se pasa de la decisión 3 (*Pack Rejuvenecedor*) a la 1 (*AntiAge*) para un alfa de 0.8.
 
 \newpage
 
@@ -324,25 +398,32 @@ dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
 -   Planteamiento:
 
     -   Un decisor
+
     -   Modelo de costos (desfavorable)
+
     -   Alternativas:
+
         -   d1= "Natación"
         -   d2= "Ciclismo"
         -   d3= "Patinaje"
         -   d4= "Equitación"
 
     -   Estados de la naturaleza:
+
         -   e1= "Practicar deporte y desplazarse en trasporte"
         -   e2= "Practicar deporte sin pagar transporte"
 
     -   Valoraciones (costos de los dos)
+
         -   Estado e1:
+
             -   $x_{1,1}=$ `r 120+4.10*8`
             -   $x_{1,2}=$ `r 245`
             -   $x_{1,3}=$ `r 40+14+192+24`
             -   $x_{1,4}=$ `r 60+10*12`
 
         -   Estado e2:
+
             -   $x_{2,1}=$ `r 120`
             -   $x_{2,2}=$ `r 245`
             -   $x_{3,2}=$ `r 40+14+192`
@@ -357,8 +438,6 @@ datos4 = crea.tablaX(c(152.8,120,
                      180, 60), numalternativas = 4, numestados = 2)
 ```
 
-
-
 ```{r}
 sol4= criterio.Todos(datos4, alfa = 0.5, favorable = FALSE)
 sol4
@@ -366,16 +445,13 @@ sol4
 
 La mejor alternativa por todos los métodos es d4, excepto por el método de Wald que es d1 (Natación). Por tanto, la mejor alternativa es practicar equitación.
 
-
 ```{r}
-colnames(tb)=c('e1','e2')
-rownames(tb)=c('Natación','Ciclismo','Patinaje','Equitación')
+colnames(datos4)=c('e1','e2')
+rownames(datos4)=c('Natación','Ciclismo','Patinaje','Equitación')
 
 criterio.Hurwicz.mod(datos4, favorable = FALSE)
 
 dibuja.criterio.Hurwicz(datos4, favorable = FALSE)
 ```
-
-
 
 \newpage
