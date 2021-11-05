@@ -1,5 +1,5 @@
 ---
-title: "Tarea1"
+title: "Tarea 1"
 author: "Maria Dolores Mercado Zafra, Raquel Beltrán Barba, Carmen Maria Jareño Martínez, Pia Baronetzky"
 date: "2/11/2021"
 output:
@@ -29,7 +29,7 @@ Fernando y Cristina quieren pedir comida para cenar. Están mirando APPs de serv
 
 -   Planteamiento:
 
-    -   Un decisior (dos personas que actuan como un único decisor).
+    -   Un decisor (dos personas que actúan como un único decisor).
 
     -   Modelo de costos (desfavorable: quieren gastar el menor dinero posible).
 
@@ -74,7 +74,9 @@ datos1 = crea.tablaX(c(22.745, 20.845,
 
 colnames(datos1)=c('e1','e2')
 rownames(datos1)=c('FoodHome','APP restarante','PeopleEats')
+
 datos1
+
 ```
 
 -   Resolución:
@@ -232,9 +234,8 @@ dibuja.criterio.Hurwicz(datos2, favorable=FALSE)
 
             -   $x_{3,2}=$ `r 30 + 15`
 
-```{=html}
 <!-- -->
-```
+
 -   Introducción de datos:
 
 ```{r}
